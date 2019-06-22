@@ -52,8 +52,16 @@
   margin: 10px;
   width: calc(100% - 20px);
   height: 75%;
+  overflow: auto;
   border: 1px solid #282c34;
   border-radius: 10px;
+}
+
+.message {
+  color: #282c34;
+  display: flex;
+  font-family: "Lucida Console", Monaco, monospace;
+  padding: 5px;
 }
 
 @keyframes App-logo-spin {

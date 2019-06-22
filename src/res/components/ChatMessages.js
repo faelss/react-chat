@@ -5,7 +5,11 @@ function ChatMessages(props) {
         <div className="chat-messages">
             {
                 props.messages.map(value => {
-                    //todo
+                    return (
+                        <div className="message">
+                            {value}
+                        </div>
+                    )
                 })
             }
         </div>

@@ -5,19 +5,22 @@ function Chat(props) {
 
     const [message,setMessage] = useState('');
     const [messages,setMessages] = useState([]);
-    
-    useEffect( () => {
-        console.log(messages);
-    });
+
+    function handleSetMessage(message) {
+        setMessages([...messages, message])
+        setMessage('');
+    }
     
     return (
         <div className="chat">
             <ChatMessages messages={messages} />
             <textarea type="text"
+                onKeyPress={ (e) => e.key === 'Enter' && handleSetMessage(message)}
+                value={message}
                 onChange={(e) => setMessage(e.target.value)}
             />
             <button type="button"
-                onClick={() => setMessages([...messages, message])}
+                onClick={() => handleSetMessage(message)}
             >Send</button>
         </div>
     );
