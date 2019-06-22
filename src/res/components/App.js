@@ -1,13 +1,19 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import '../css/App.css';
 import Chat from './Chat';
+import {SocketContext} from './SocketContext';
 
 function App() {
+
+    let socketContextValue = useContext(SocketContext);
+
     return (
         <div className="App">
-            <header className="App-header">
-            </header>
-            <Chat/>
+            <SocketContext.Provider value={socketContextValue}>
+                <header className="App-header">
+                </header>
+                <Chat/>
+            </SocketContext.Provider>
         </div>
     );
 }

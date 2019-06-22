@@ -40,6 +40,11 @@
   border-radius: 5px;
 }
 
+.chat textarea:focus {
+  border-color: #7d5bbe;
+  box-shadow: 0 0 6px -2px #7d5bbe;
+}
+
 .chat button {
   position: absolute;
   bottom: 10px;
@@ -80,10 +85,13 @@
   border: 2px solid #aaa;
 }
 
+.raised:focus {
+  outline: 0;
+}
+
 .raised:active {
   background-color: #828282;
   border: 2px solid #828282;
-  outline: 0;
 }
 
 @keyframes App-logo-spin {
