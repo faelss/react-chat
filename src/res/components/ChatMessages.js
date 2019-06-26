@@ -1,6 +1,7 @@
 import React from 'react';
 
 function ChatMessages(props) {
+
     return (
         <div ref={props.chatMessageRef} className="chat-messages">
             {
