@@ -5,10 +5,10 @@ function ChatMessages(props) {
     return (
         <div ref={props.chatMessageRef} className="chat-messages">
             {
-                props.messages.map((value,index) => {
+                props.messages.map(value => {
                     return (
-                        <div key={'message-div-key-'+index} className="message">
-                            {value}
+                        <div key={'message-div-key-'+value.id} className="message">
+                            {value.msg}
                         </div>
                     )
                 })

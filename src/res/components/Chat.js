@@ -14,10 +14,16 @@ function Chat(props) {
         if (message.trim().length !== 0) {
             sendMessageBroadcast(message,socket, (broadcastMessage,err) => {
                 if (!err) {
-                    setMessages([...messages,broadcastMessage]);
+                    setMessages(prevState => [
+                        ...prevState,
+                        {
+                            msg:broadcastMessage,
+                            id:Math.random()
+                        }
+                    ]);
                     setMessage('');
                     socket.removeAllListeners('broadcast');
-                    messageBoxRef.current.focus();    
+                    messageBoxRef.current.focus();
                 }
             });
         }

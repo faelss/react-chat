@@ -1,4 +1,4 @@
-export function sendMessageBroadcast(message,socket,callback) {  
+export function sendMessageBroadcast(message,socket,callback) {
     fetch('/api/message/broadcast', {
         method: 'POST',
         headers: {
