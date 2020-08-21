@@ -10,4 +10,3 @@ Chat using new hooks syntax!
 ## To-do
 * Private messages.
 * UI improvement.
-* etc
