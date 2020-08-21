@@ -1,5 +1,5 @@
 # react-chat
-React real-time chat using new hooks syntax.
+Chat using new hooks syntax!
 
 ## Known bugs and issues
 * Messages taking to long to broadcast.
