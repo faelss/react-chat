@@ -1,62 +1,79 @@
-import React,{useState,useEffect,useRef} from 'react';
-import ChatMessages from './ChatMessages';
-import {SocketContext} from './SocketContext';
-import {sendMessageBroadcast} from '../hooks/sendMessageBroadcast';
+import React, { useState, useEffect, useRef, useContext } from "react";
+import ChatMessages from "./ChatMessages";
+import { AppContext } from "./AppContext";
 
 function Chat(props) {
+  const chatMessageRef = useRef(null);
+  const messageBoxRef = useRef(null);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const socket = useContext(AppContext);
 
-    const chatMessageRef = useRef(null);
-    const messageBoxRef = useRef(null);
-    const [message,setMessage] = useState('');
-    const [messages,setMessages] = useState([]);
+  console.log(socket)
 
-    function handleSetMessage(message,socket) {     
-        if (message.trim().length !== 0) {
-            sendMessageBroadcast(message,socket, (broadcastMessage,err) => {
-                if (!err) {
-                    setMessages(prevState => [
-                        ...prevState,
-                        {
-                            msg:broadcastMessage,
-                            id:Math.random()
-                        }
-                    ]);
-                    setMessage('');
-                    socket.removeAllListeners('broadcast');
-                    messageBoxRef.current.focus();
-                }
-            });
-        }
-    }
+  useEffect(() => {
+    listenBroadcastMessages();
+  }, []);
 
-    useEffect( () => {   
-        chatMessageRef.current.scroll(0,chatMessageRef.current.scrollHeight);
-    });
-    
-    return (
-        <div className="chat">
-            <SocketContext.Consumer>
-            { 
-                (socket) => (
-                    <React.Fragment>
-                        <ChatMessages chatMessageRef={chatMessageRef} messages={messages} />
-                        <textarea 
-                            ref={messageBoxRef}
-                            onKeyPress={ (e) => e.key === 'Enter' && handleSetMessage(message,socket)}
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                        />
-                        <button 
-                            className="raised"
-                            type="button"
-                            onClick={() => handleSetMessage(message,socket)}
-                        >Send</button>
-                    </React.Fragment>
-                )
+  function listenBroadcastMessages() {
+      socket.on("message::broadcast", newMessage => {
+        setMessages(prevMessages => [
+            ...prevMessages,
+            {
+                msg: newMessage,
+                userId: 0
             }
-            </SocketContext.Consumer>
-        </div>
-    );
+        ]);
+      })
+  }
+
+  function sendMessage(message) {
+    if (message.trim().length !== 0) {
+        socket.emit("message::broadcast", message);
+        setMessage("");
+    //   sendMessageBroadcast(message, (broadcastMessage, err) => {
+    //     if (!err) {
+    //       setMessages((prevState) => [
+    //         ...prevState,
+    //         {
+    //           msg: broadcastMessage,
+    //           id: Math.random(),
+    //         },
+    //       ]);
+    //       setMessage("");
+    //       socket.removeAllListeners("broadcast");
+    //       messageBoxRef.current.focus();
+    //     }
+    //   });
+    }
+  }
+
+  useEffect(() => {
+    chatMessageRef.current.scroll(0, chatMessageRef.current.scrollHeight);
+  });
+
+  return (
+    <div className="chat">
+      <React.Fragment>
+        <ChatMessages chatMessageRef={chatMessageRef} messages={messages} />
+        <textarea
+          ref={messageBoxRef}
+          onKeyPress={(e) =>
+            e.key === "Enter" && sendMessage(message)
+          }
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button
+          className="raised"
+          type="button"
+          onClick={() => sendMessage(message)}
+        >
+          Send
+        </button>
+      </React.Fragment>
+    </div>
+  );
 }
 
 export default Chat;

@@ -8,7 +8,7 @@ function ChatMessages(props) {
                 props.messages.map(value => {
                     return (
                         <div key={'message-div-key-'+value.id} className="message">
-                            {value.msg}
+                            {value.userId}:{value.msg}
                         </div>
                     )
                 })

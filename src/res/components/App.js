@@ -1,21 +1,33 @@
-import React,{useContext} from 'react';
-import '../css/App.css';
-import Chat from './Chat';
-import {SocketContext} from './SocketContext';
+import React, { useContext, useEffect, useState } from "react";
+import "../css/App.css";
+import Chat from "./Chat";
+import { AppContext } from "./AppContext";
 
 function App() {
+  const { SocketContext: socket } = useContext(AppContext);
 
-    let socketContextValue = useContext(SocketContext);
+  console.log(socket);
 
-    return (
-        <div className="App">
-            <SocketContext.Provider value={socketContextValue}>
-                <header className="App-header">
-                </header>
-                <Chat/>
-            </SocketContext.Provider>
-        </div>
-    );
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    socket.on("user::getData", (user) => {
+        console.log(user)
+        setUser(user)
+    });
+  }, [user]);
+
+  if (!user) {
+      return null;
+  }
+
+  return (
+    <div className="App">
+      <AppContext.Provider value={socket, user}>
+        <Chat />
+      </AppContext.Provider>
+    </div>
+  );
 }
 
 export default App;
